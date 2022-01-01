@@ -13,12 +13,17 @@ const TaskList = () => {
             description: "New task " + tasks.length + 1
         };
         setTasks([...tasks, newTask]);
+        console.log(tasks);
     };
 
     return (
         <div className="task-list col-sm-2">
             <h2>Task List</h2>
-            {tasks.map((task, index) => (<div className="row"><Task key={index} {...task}/></div>))}
+            {
+                tasks.map(
+                    task => <div className="row"><Task key={task.id} {...task}/></div>
+                )
+            }
             <div className="row">
                 <Button className="col-sm-12" onClick={addTask}>Add task</Button>
             </div>

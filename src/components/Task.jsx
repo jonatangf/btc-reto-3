@@ -3,8 +3,7 @@ import {Card} from "react-bootstrap";
 
 const Task = (props) => {
 
-    const [title, setTitle] = useState(props.name);
-    const [description, setDescription] = useState(props.description);
+    const [cardData, setCardData] = useState({'title': props.name, 'description': props.description});
     const [editTitle, setEditTitle] = useState(false);
     const [editDescription, setEditDescription] = useState(false);
 
@@ -22,11 +21,7 @@ const Task = (props) => {
 
     const handleChange = event => {
         console.log("Handling on change event");
-        if (event.target.name === "title") {
-            setTitle(event.target.value);
-        } else if (event.target.name === "description") {
-            setDescription(event.target.value);
-        }
+        setCardData({...cardData, [event.target.name]: event.target.value});
     };
 
     return (
@@ -35,16 +30,18 @@ const Task = (props) => {
                 {
                     editTitle ?
                         <Card.Title>
-                            <input name="input" value={title} onChange={handleChange}/>
+                            <input name="title" value={cardData.title} onChange={handleChange}/>
                         </Card.Title> :
-                        <Card.Title name="title" onClick={handleTitleClick}>{title}</Card.Title>
+                        <Card.Title onClick={handleTitleClick}>{cardData.title}</Card.Title>
                 }
                 {
                     editDescription ?
                         <Card.Text>
-                            <input name="input" value={description} onChange={handleChange}/>
+                            <input name="description" value={cardData.description} onChange={handleChange}/>
                         </Card.Text> :
-                        <Card.Text name="description" onClick={handleDescriptionClick}>{description}</Card.Text>
+                        <Card.Text onClick={handleDescriptionClick}>
+                            <textarea>{cardData.description}</textarea>
+                        </Card.Text>
                 }
             </Card.Body>
         </Card>
