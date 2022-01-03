@@ -38,3 +38,7 @@ code {
 .task-list {
     padding: 8px;
 }
+
+.task-list-title {
+    cursor: pointer;
+}

@@ -24,24 +24,34 @@ const Task = (props) => {
         setCardData({...cardData, [event.target.name]: event.target.value});
     };
 
+    const onBlurTitle = event => {
+        setEditTitle(false);
+    };
+
+    const onBlurDescription = event => {
+        setEditDescription(false);
+    };
+
     return (
         <Card name="card" className="task">
             <Card.Body>
                 {
                     editTitle ?
                         <Card.Title>
-                            <input name="title" value={cardData.title} onChange={handleChange}/>
+                            <div onBlur={onBlurTitle}>
+                                <input name="title" value={cardData.title} onChange={handleChange}/>
+                            </div>
                         </Card.Title> :
                         <Card.Title onClick={handleTitleClick}>{cardData.title}</Card.Title>
                 }
                 {
                     editDescription ?
                         <Card.Text>
-                            <input name="description" value={cardData.description} onChange={handleChange}/>
+                            <div onBlur={onBlurDescription}>
+                                <input name="description" value={cardData.description} onChange={handleChange}/>
+                            </div>
                         </Card.Text> :
-                        <Card.Text onClick={handleDescriptionClick}>
-                            <textarea>{cardData.description}</textarea>
-                        </Card.Text>
+                        <Card.Text onClick={handleDescriptionClick}>{cardData.description}</Card.Text>
                 }
             </Card.Body>
         </Card>
