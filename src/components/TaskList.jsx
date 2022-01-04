@@ -1,11 +1,22 @@
-import React, {useState} from "react";
+import React, {useLayoutEffect, useState} from "react";
 import Task from "./Task";
 import {Button} from "react-bootstrap";
 
-const TaskList = ({id, tasks, addTask}) => {
+const TaskList = ({id, tasks, addTask, removeTaskList, removeTask}) => {
 
     const [taskListData, setTaskListData] = useState({"name": "Task List"});
     const [editTitle, setEditTitle] = useState(false);
+    const titleRef = React.createRef();
+
+    useLayoutEffect(() => {
+        if (editTitle) {
+            titleRef.current.focus();
+        }
+    }, [editTitle])
+
+    const removeLocalTaskList = () => {
+        removeTaskList(id);
+    }
 
     const addLocalTask = () => {
         const newTask = {
@@ -15,6 +26,10 @@ const TaskList = ({id, tasks, addTask}) => {
         };
         addTask(id, newTask);
     };
+
+    const removeLocalTask = (taskId) => {
+        removeTask(id, taskId);
+    }
 
     const handleChange = event => {
         setTaskListData({...taskListData, [event.target.name]: event.target.value});
@@ -30,16 +45,30 @@ const TaskList = ({id, tasks, addTask}) => {
 
     return (
         <div className="task-list col-sm-2" onBlur={onBlur}>
+            <div className="row">
+                <div className="col-sm-8">
+                    {
+                        editTitle ?
+                            <input type="text" name="name" ref={titleRef} value={taskListData.name}
+                                   onChange={handleChange}/> :
+                            <h2 className="task-list-title" onClick={handleTitleClick}>{taskListData.name}</h2>
+                    }
+                </div>
+                <div className="col-sm-4">
+                    <Button variant="outline-primary" onClick={removeLocalTaskList}>Remove</Button>
+                </div>
+            </div>
             {
-                editTitle ?
-                    <input type="text" name="name" value={taskListData.name} onChange={handleChange}/> :
-                    <h2 className="task-list-title" onClick={handleTitleClick}>{taskListData.name}</h2>
-            }
-            {
-                tasks?.map(task => <div key={task.id} className="row" draggable={true}><Task {...task}/></div>)
+                tasks?.map(
+                    task => <div key={task.id} className="row" draggable={true}>
+                        <Task {...task} removeTask={removeLocalTask}/>
+                    </div>
+                )
             }
             <div className="row">
-                <Button className="col-sm-12" onClick={addLocalTask}>Add task</Button>
+                <div className="col-sm-12">
+                    <Button onClick={addLocalTask}>Add task</Button>
+                </div>
             </div>
         </div>
     );

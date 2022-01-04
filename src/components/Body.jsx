@@ -13,14 +13,34 @@ const Body = () => {
         setTaskList([...taskList, tl])
     }
 
+    const removeTaskList = id => {
+        setTaskList(taskList.filter(tl => tl.id !== id))
+    }
+
     const addTask = (taskListId, task) => {
         setTaskList(taskList.map(tl => tl.id === taskListId ? {...tl, tasks: [...tl.tasks, task]} : tl))
+    }
+
+    const removeTask = (taskListId, taskId) => {
+        setTaskList(taskList.map(tl => tl.id === taskListId ? {
+            ...tl,
+            tasks: tl.tasks.filter(task => task.id !== taskId)
+        } : tl))
     }
 
     return (
         <div className="container-fluid">
             <div className="row">
-                {taskList.map(tl => <TaskList key={tl.id} {...tl} addTask={addTask}/>)}
+                {
+                    taskList.map(
+                        tl => <TaskList
+                            key={tl.id} {...tl}
+                            addTask={addTask}
+                            removeTaskList={removeTaskList}
+                            removeTask={removeTask}
+                        />
+                    )
+                }
                 <div className="col-md-2">
                     <Button onClick={addTaskList}>Create new task list</Button>
                 </div>
