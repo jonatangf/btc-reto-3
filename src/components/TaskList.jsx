@@ -1,8 +1,10 @@
 import React, {useLayoutEffect, useState} from "react";
 import Task from "./Task";
 import {Button} from "react-bootstrap";
+import {v4 as uuidv4} from 'uuid';
+import {Draggable} from 'react-beautiful-dnd';
 
-const TaskList = ({id, tasks, addTask, removeTaskList, removeTask}) => {
+const TaskList = ({id, tasks, addTask, removeTaskList, removeTask, placeholder}) => {
 
     const [taskListData, setTaskListData] = useState({"name": "Task List"});
     const [editTitle, setEditTitle] = useState(false);
@@ -20,7 +22,7 @@ const TaskList = ({id, tasks, addTask, removeTaskList, removeTask}) => {
 
     const addLocalTask = () => {
         const newTask = {
-            id: tasks.reduce((maxId, task) => Math.max(task.id, maxId), 0) + 1,
+            id: uuidv4().toString(),
             name: tasks.length + 1,
             description: "New task " + tasks.length + 1
         };
@@ -60,11 +62,18 @@ const TaskList = ({id, tasks, addTask, removeTaskList, removeTask}) => {
             </div>
             {
                 tasks?.map(
-                    task => <div key={task.id} className="row" draggable={true}>
-                        <Task {...task} removeTask={removeLocalTask}/>
-                    </div>
+                    (task, index) =>
+                        <Draggable key={task.id} draggableId={task.id} index={index}>
+                            {(provided) =>
+                                <div className="row" {...provided.draggableProps} ref={provided.innerRef}
+                                    {...provided.dragHandleProps}>
+                                    <Task {...task} removeTask={removeLocalTask}/>
+                                </div>
+                            }
+                        </Draggable>
                 )
             }
+            {placeholder}
             <div className="row">
                 <div className="col-sm-12">
                     <Button onClick={addLocalTask}>Add task</Button>
