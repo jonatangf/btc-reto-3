@@ -23,7 +23,7 @@ const TaskList = ({id, tasks, addTask, removeTaskList, removeTask, placeholder})
     const addLocalTask = () => {
         const newTask = {
             id: uuidv4().toString(),
-            name: tasks.length + 1,
+            name: "Task",
             description: "New task " + tasks.length + 1
         };
         addTask(id, newTask);
@@ -46,7 +46,7 @@ const TaskList = ({id, tasks, addTask, removeTaskList, removeTask, placeholder})
     }
 
     return (
-        <div className="task-list col-sm-2" onBlur={onBlur}>
+        <div className="task-list" onBlur={onBlur}>
             <div className="row">
                 <div className="col-sm-8">
                     {

@@ -23,7 +23,7 @@ const Body = () => {
     const addTask = (taskListId, task) => {
         setTaskList(taskList.map(tl => tl.id === taskListId ? {
             ...tl,
-            tasks: [...tl.tasks, {...task, draggableId: taskNumber}]
+            tasks: [...tl.tasks, {...task, name: `Task ${taskNumber}`}]
         } : tl))
         setTaskNumber(taskNumber + 1);
     }
@@ -43,14 +43,26 @@ const Body = () => {
     }
 
     const handleOnDragEnd = (result) => {
-        const {destination, source, draggableId} = result;
+        const {destination, source} = result;
         if (!destination) {
             return;
         }
         if (destination.droppableId === source.droppableId && destination.index === source.index) {
             return;
+        } else if (destination.droppableId === source.droppableId) {
+            let filteredTaskList = taskList.filter(tl => tl.id === destination.droppableId)[0];
+            let tasks = filteredTaskList.tasks;
+            filteredTaskList.tasks = reorderTasks(tasks, source.index, destination.index)
+        } else {
+            let sourceTaskList = taskList.filter(tl => tl.id === source.droppableId)[0];
+            let destinationTaskList = taskList.filter(tl => tl.id === destination.droppableId)[0];
+            let sourceTasks = sourceTaskList.tasks;
+            let destinationTasks = destinationTaskList.tasks;
+            let [removed] = sourceTasks.splice(source.index, 1);
+            destinationTasks.splice(destination.index, 0, removed);
+            sourceTaskList.tasks = sourceTasks;
+            destinationTaskList.tasks = destinationTasks;
         }
-        // TODO: order task in new position and/or task list
     }
 
     return (
@@ -60,9 +72,9 @@ const Body = () => {
                     {
                         taskList.map(
                             tl => (
-                                <Droppable key={tl.id} droppableId={tl.id}>
-                                    {(provided, snapshot) =>
-                                        <div {...provided.droppableProps} ref={provided.innerRef}>
+                                <Droppable key={tl.id} droppableId={tl.id} >
+                                    {(provided) =>
+                                        <div {...provided.droppableProps} ref={provided.innerRef} className="col-sm-3">
                                             <TaskList
                                                 key={tl.id} {...tl}
                                                 addTask={addTask}
