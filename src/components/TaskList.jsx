@@ -1,6 +1,6 @@
 import React, {useLayoutEffect, useState} from "react";
 import Task from "./Task";
-import {Button} from "react-bootstrap";
+import {Button} from "@mui/material";
 import {v4 as uuidv4} from 'uuid';
 import {Draggable} from 'react-beautiful-dnd';
 
@@ -57,26 +57,28 @@ const TaskList = ({id, tasks, addTask, removeTaskList, removeTask, placeholder})
                     }
                 </div>
                 <div className="col-sm-4">
-                    <Button variant="outline-primary" onClick={removeLocalTaskList}>Remove</Button>
+                    <Button variant="outlined" color="error" onClick={removeLocalTaskList}>Remove</Button>
                 </div>
             </div>
-            {
-                tasks?.map(
-                    (task, index) =>
-                        <Draggable key={task.id} draggableId={task.id} index={index}>
-                            {(provided) =>
-                                <div className="row" {...provided.draggableProps} ref={provided.innerRef}
-                                    {...provided.dragHandleProps}>
-                                    <Task {...task} removeTask={removeLocalTask}/>
-                                </div>
-                            }
-                        </Draggable>
-                )
-            }
-            {placeholder}
+            <div>
+                {
+                    tasks?.map(
+                        (task, index) =>
+                            <Draggable key={task.id} draggableId={task.id} index={index}>
+                                {(provided) =>
+                                    <div className="row" {...provided.draggableProps} ref={provided.innerRef}
+                                         {...provided.dragHandleProps}>
+                                        <Task {...task} removeTask={removeLocalTask}/>
+                                    </div>
+                                }
+                            </Draggable>
+                    )
+                }
+                {placeholder}
+            </div>
             <div className="row">
                 <div className="col-sm-12">
-                    <Button onClick={addLocalTask}>Add task</Button>
+                    <Button variant="contained" onClick={addLocalTask} className="col-sm-12">Add task</Button>
                 </div>
             </div>
         </div>

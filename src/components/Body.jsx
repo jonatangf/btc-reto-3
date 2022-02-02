@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Button} from "react-bootstrap";
+import {Button} from "@mui/material";
 import TaskList from "./TaskList";
 import {v4 as uuidv4} from 'uuid';
 import {DragDropContext, Droppable} from 'react-beautiful-dnd';
@@ -68,13 +68,13 @@ const Body = () => {
     return (
         <div className="container-fluid">
             <DragDropContext onDragEnd={handleOnDragEnd}>
-                <div className="row">
+                <div className="infinite-scroll">
                     {
                         taskList.map(
                             tl => (
                                 <Droppable key={tl.id} droppableId={tl.id} >
                                     {(provided) =>
-                                        <div {...provided.droppableProps} ref={provided.innerRef} className="col-sm-3">
+                                        <div {...provided.droppableProps} ref={provided.innerRef} className="col-sm-2">
                                             <TaskList
                                                 key={tl.id} {...tl}
                                                 addTask={addTask}
@@ -88,7 +88,7 @@ const Body = () => {
                         )
                     }
                     <div className="col-md-2">
-                        <Button onClick={addTaskList}>Create new task list</Button>
+                        <Button onClick={addTaskList} className="col-sm-12">Create new task list</Button>
                     </div>
                 </div>
             </DragDropContext>
