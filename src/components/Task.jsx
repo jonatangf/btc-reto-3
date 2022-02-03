@@ -1,5 +1,5 @@
 import React, {useLayoutEffect, useState} from "react";
-import {Button, Card} from "react-bootstrap";
+import {Button, Card, CardContent, CardHeader} from "@mui/material";
 
 const Task = (props) => {
 
@@ -10,7 +10,7 @@ const Task = (props) => {
     const descriptionRef = React.createRef();
 
     useLayoutEffect(() => {
-        if (editTitle) {
+        if (editTitle && titleRef.current) {
             titleRef.current.focus();
         }
 
@@ -23,7 +23,9 @@ const Task = (props) => {
         console.log("Handling title click event");
         setEditTitle(true);
         setEditDescription(false);
-        titleRef.current.focus();
+        if (titleRef.current) {
+            titleRef.current.focus();
+        }
     };
 
     const handleDescriptionClick = event => {
@@ -50,37 +52,35 @@ const Task = (props) => {
     };
 
     return (
-        <div className="row">
-            <Card name="card" className="col-sm-12 task">
-                <Card.Body>
-                    {
-                        editTitle ?
-                            <Card.Title>
-                                <div onBlur={onBlurTitle}>
-                                    <input name="title" ref={titleRef} value={cardData.title}
-                                           onChange={handleChange}/>
-                                </div>
-                            </Card.Title> :
-                            <Card.Title onClick={handleTitleClick}>
-                                <div className="row">
-                                    <div className="col-sm-10">{cardData.title}</div>
-                                    <div className="col-sm-2">
-                                        <Button variant="danger" onClick={removeMe}>X</Button>
-                                    </div>
-                                </div>
-                            </Card.Title>
-                    }
+        <div className="container-fluid">
+            <Card className="task">
+                {
+                    editTitle ?
+                        <div onBlur={onBlurTitle}>
+                            <input name="title" ref={titleRef} value={cardData.title}
+                                   onChange={handleChange}/>
+                        </div>
+                        :
+                        <div className="row">
+                            <div className="col-sm-8">
+                                <CardHeader title={cardData.title} onClick={handleTitleClick}/>
+                            </div>
+                            <div className="col-sm-4 remove-task-button">
+                                <Button variant="danger outlined" onClick={removeMe}>X</Button>
+                            </div>
+                        </div>
+                }
+                <CardContent>
                     {
                         editDescription ?
-                            <Card.Text>
-                                <div onBlur={onBlurDescription}>
-                                    <input name="description" ref={descriptionRef} value={cardData.description}
-                                           onChange={handleChange}/>
-                                </div>
-                            </Card.Text> :
-                            <Card.Text onClick={handleDescriptionClick}>{cardData.description}</Card.Text>
+                            <div onBlur={onBlurDescription}>
+                                <input name="description" ref={descriptionRef} value={cardData.description}
+                                       onChange={handleChange}/>
+                            </div>
+                            :
+                            <div onClick={handleDescriptionClick}>{cardData.description}</div>
                     }
-                </Card.Body>
+                </CardContent>
             </Card>
         </div>
     );

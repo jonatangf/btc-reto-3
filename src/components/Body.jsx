@@ -72,7 +72,7 @@ const Body = () => {
                     {
                         taskList.map(
                             tl => (
-                                <Droppable key={tl.id} droppableId={tl.id} >
+                                <Droppable key={tl.id} droppableId={tl.id}>
                                     {(provided) =>
                                         <div {...provided.droppableProps} ref={provided.innerRef} className="col-sm-2">
                                             <TaskList
@@ -87,8 +87,8 @@ const Body = () => {
                             )
                         )
                     }
-                    <div className="col-md-2">
-                        <Button onClick={addTaskList} className="col-sm-12">Create new task list</Button>
+                    <div>
+                        <Button onClick={addTaskList}>Create new task list</Button>
                     </div>
                 </div>
             </DragDropContext>

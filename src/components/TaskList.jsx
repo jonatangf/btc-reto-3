@@ -46,9 +46,9 @@ const TaskList = ({id, tasks, addTask, removeTaskList, removeTask, placeholder})
     }
 
     return (
-        <div className="task-list" onBlur={onBlur}>
+        <div className="container-fluid" onBlur={onBlur}>
             <div className="row">
-                <div className="col-sm-8">
+                <div className="col-sm-7">
                     {
                         editTitle ?
                             <input type="text" name="name" ref={titleRef} value={taskListData.name}
@@ -56,29 +56,35 @@ const TaskList = ({id, tasks, addTask, removeTaskList, removeTask, placeholder})
                             <h2 className="task-list-title" onClick={handleTitleClick}>{taskListData.name}</h2>
                     }
                 </div>
-                <div className="col-sm-4">
+                <div className="col-sm-5">
                     <Button variant="outlined" color="error" onClick={removeLocalTaskList}>Remove</Button>
                 </div>
             </div>
-            <div>
-                {
-                    tasks?.map(
-                        (task, index) =>
-                            <Draggable key={task.id} draggableId={task.id} index={index}>
-                                {(provided) =>
-                                    <div className="row" {...provided.draggableProps} ref={provided.innerRef}
-                                         {...provided.dragHandleProps}>
-                                        <Task {...task} removeTask={removeLocalTask}/>
-                                    </div>
-                                }
-                            </Draggable>
-                    )
-                }
-                {placeholder}
+            <div className="row">
+                <div className="col-sm-12">
+                    {
+                        tasks?.map(
+                            (task, index) =>
+                                <Draggable key={task.id} draggableId={task.id} index={index}>
+                                    {(provided) =>
+                                        <div className="row" {...provided.draggableProps} ref={provided.innerRef}
+                                             {...provided.dragHandleProps}>
+                                            <Task {...task} removeTask={removeLocalTask}/>
+                                        </div>
+                                    }
+                                </Draggable>
+                        )
+                    }
+                </div>
             </div>
             <div className="row">
                 <div className="col-sm-12">
-                    <Button variant="contained" onClick={addLocalTask} className="col-sm-12">Add task</Button>
+                    {placeholder}
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-sm-12">
+                    <Button variant="contained" onClick={addLocalTask}>Add task</Button>
                 </div>
             </div>
         </div>

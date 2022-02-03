@@ -49,3 +49,7 @@ code {
     white-space: nowrap;
     display: flex;
 }
+
+.remove-task-button {
+    margin-top: 16px;
+}
