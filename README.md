@@ -2,6 +2,39 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Summary
+The key of this task has been to use [react-beautiful-dnd](https://github.com/atlassian/react-beautiful-dnd) to create a 
+drag and drop interface. This library has been created by Atlassian and its core characteristics are:
+
+* Beautiful and natural movement of items 💐
+* Accessible: powerful keyboard and screen reader support ♿️
+* Extremely performant 🚀
+* Clean and powerful api which is simple to get started with
+* Plays extremely well with standard browser interactions
+* Unopinionated styling
+* No creation of additional wrapper dom nodes - flexbox and focus management friendly!
+ 
+## Configuration for react-beautiful-dnd
+
+First, we need to enclose our code inside a `<DragDropContext onDragEnd={handleOnDragEnd}>` component, and then we need 
+to create a function that will be called when the drag and drop operation is complete. In this case, the function is 
+`handleOnDragEnd` (included in the file App.js), and the goal of this function is to update the state of the application when the element is dropped.
+
+Second, we need to create a `<Droppable droppableId="droppable">` component, which corresponds to the area where the 
+elements can be dropped. In our case, this element will be every TodoList in the application. 
+
+Third, we need to create a `<Draggable draggableId="draggable">` component, which will be every ticket in the TodoList.
+
+Last but not least, it is important to feed the `<TodoList>` with the placeholder, which will be the space where the 
+elements can be dropped to be added at the end of the list.
+
+The logic of the drag and drop is contained in the `handleOnDragEnd` function, and its goal is to update the state of 
+the application depending on three scenarios:
+
+* The element is dropped in the same position as it was before: it will remain in the same position.
+* The element is dropped in a different position than it was before, but inside the same `<Droppable>`: the order of the TodoList will be changed
+* The element is dropped in a different `Droppable`: the element will be moved to the new `<Droppable>` and it will be removed from the current one
+
 ## Available Scripts
 
 In the project directory, you can run:
